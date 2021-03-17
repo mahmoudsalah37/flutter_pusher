@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                                 userName: userName,
                               )));
                     else
-                      ScaffoldMessenger.of(context).showSnackBar(
+                      Scaffold.of(context).showSnackBar(
                           SnackBar(content: Text('Enter user name!')));
                   },
                   icon: Icon(Icons.login),
