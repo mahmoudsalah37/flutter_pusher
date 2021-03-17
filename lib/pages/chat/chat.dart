@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             Expanded(
               child: Scrollbar(
-                showTrackOnHover: true,
+//                showTrackOnHover: true,
                 controller: _scrollController,
                 child: ListView.builder(
                     controller: _scrollController,
