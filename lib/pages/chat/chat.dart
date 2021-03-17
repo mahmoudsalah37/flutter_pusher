@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_pusher/models/chat_model.dart';
+import 'package:intl/intl.dart' as i;
 import 'package:pusher_websocket_flutter/pusher.dart';
 import 'package:pusher_http_dart/pusher_http_dart.dart' as p;
 
@@ -16,9 +19,11 @@ class _ChatPageState extends State<ChatPage> {
   final List<ChatModel> messages = [];
   final TextEditingController _textEditingController =
       TextEditingController(text: '');
+  final ScrollController _scrollController = ScrollController();
   @override
   void initState() {
     super.initState();
+
     initPusher();
   }
 
@@ -39,6 +44,11 @@ class _ChatPageState extends State<ChatPage> {
       final message = ChatModel.fromJson(onEvent.data);
       setState(() {
         messages.add(message);
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 1000,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.fastOutSlowIn,
+        );
       });
       // print(onEvent.data);
     });
@@ -54,20 +64,51 @@ class _ChatPageState extends State<ChatPage> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.builder(
-                  itemCount: messages.length,
-                  itemBuilder: (_, index) {
-                    final message = messages.elementAt(index);
-                    return Directionality(
-                      textDirection: widget.userName == message.user
-                          ? TextDirection.ltr
-                          : TextDirection.rtl,
-                      child: ListTile(
-                        title: Text("${message.user}"),
-                        subtitle: Text("${message.message}"),
-                      ),
-                    );
-                  }),
+              child: Scrollbar(
+                showTrackOnHover: true,
+                controller: _scrollController,
+                child: ListView.builder(
+                    controller: _scrollController,
+                    itemCount: messages.length,
+                    itemBuilder: (_, index) {
+                      final message = messages.elementAt(index);
+                      bool isMe = widget.userName == message.user;
+                      return Directionality(
+                        textDirection:
+                            isMe ? TextDirection.ltr : TextDirection.rtl,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ListTile(
+                                tileColor:
+                                    isMe ? Colors.grey[300] : Colors.blue[300],
+                                title: Text(
+                                  "${message.user}",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                subtitle: Padding(
+                                  padding: const EdgeInsets.only(left: 4.0),
+                                  child: Text("${message.message}"),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  "${message.date}",
+                                  style: TextStyle(
+                                      fontSize: 10.0, color: Colors.grey[500]),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }),
+              ),
             ),
             Container(
               color: Colors.grey[200],
@@ -93,7 +134,10 @@ class _ChatPageState extends State<ChatPage> {
                             p.PusherOptions(cluster: 'eu'));
                         final message = _textEditingController.text.trim();
                         final data = ChatModel(
-                                user: '${widget.userName}', message: '$message')
+                                user: '${widget.userName}',
+                                message: '$message',
+                                date:
+                                    '${i.DateFormat('yyyy-MM-dd hh:mm').format(DateTime.now())}')
                             .toMap();
                         p.Response response = await pusher
                             .trigger(['channelName'], 'eventName', data);

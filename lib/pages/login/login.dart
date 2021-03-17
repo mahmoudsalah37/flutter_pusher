@@ -5,12 +5,13 @@ class LoginPage extends StatelessWidget {
   final TextEditingController _textEditingController =
       TextEditingController(text: '');
   LoginPage();
-
+  final _globalKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _globalKey,
       appBar: AppBar(
-        title: Text("Chat"),
+        title: Text("Login"),
       ),
       body: Container(
         child: Padding(
@@ -39,7 +40,7 @@ class LoginPage extends StatelessWidget {
                                 userName: userName,
                               )));
                     else
-                      Scaffold.of(context).showSnackBar(
+                      _globalKey.currentState.showSnackBar(
                           SnackBar(content: Text('Enter user name!')));
                   },
                   icon: Icon(Icons.login),
