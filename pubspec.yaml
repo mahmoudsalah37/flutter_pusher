@@ -23,6 +23,16 @@ environment:
 dependencies:
   pusher_websocket_flutter: ^0.1.1
   pusher_http_dart: ^1.0.1
+
+#  map packages
+  flutter_map: ^0.11.0
+  geolocator: ^6.2.1
+  fluttertoast: ^7.1.6
+  geocoder: ^0.2.1
+  geocoding: ^1.0.5
+
+  map_controller: ^0.9.0
+
   flutter:
     sdk: flutter
 
