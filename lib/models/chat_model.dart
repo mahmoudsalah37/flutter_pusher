@@ -5,10 +5,8 @@ import 'package:flutter/foundation.dart';
 class ChatModel {
   final String user;
   final String message;
-  ChatModel({
-    @required this.user,
-    @required this.message,
-  });
+  final String date;
+  ChatModel({@required this.user, @required this.message, @required this.date});
 
   ChatModel copyWith({
     String user,
@@ -21,17 +19,12 @@ class ChatModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'user': user,
-      'message': message,
-    };
+    return {'user': user, 'message': message, 'date': date};
   }
 
   factory ChatModel.fromMap(Map<String, dynamic> map) {
     return ChatModel(
-      user: map['user'],
-      message: map['message'],
-    );
+        user: map['user'], message: map['message'], date: map['date']);
   }
 
   String toJson() => json.encode(toMap());
