@@ -10,23 +10,41 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            TextButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => MapScreen(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => MapScreen(),
+                  ),
+                ),
+                child: Text(
+                  'Map',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
-              child: Text('Map'),
             ),
-            TextButton(
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => LoginPage(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all(Colors.blue),
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => LoginPage(),
+                  ),
+                ),
+                child: Text(
+                  'Chat',
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
-              child: Text('Chat'),
             ),
           ],
         ),

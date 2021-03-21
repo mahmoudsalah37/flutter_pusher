@@ -44,8 +44,8 @@ class _MapScreenState extends State<MapScreen> {
         long = geoPosition.longitude;
         var coordinates = new Coordinates(lat, long);
 //      Geocoder.local.findAddressesFromCoordinates(coordinates);
-        convertToAddress(coordinates);
-        print('address is : ${convertToAddress(coordinates)}');
+        // convertToAddress(coordinates);
+        // print('address is : ${convertToAddress(coordinates)}');
       });
     } on PlatformException catch (e) {
       print(e);
@@ -61,7 +61,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    getCurrentLocation();
+    // getCurrentLocation();
 
 //    mapController = MapController();
 //    statefulMapController = StatefulMapController(mapController: mapController);
@@ -72,21 +72,21 @@ class _MapScreenState extends State<MapScreen> {
 //    var locationOption = LocationOptions(distanceFilter: 10);
     streamSubscription =
         Geolocator.getPositionStream().listen((Position position) {
-          setState(() {
-            _position = position;
-            print('position is $_position');
-          });
-          lat = position.latitude;
-          long = position.longitude;
-          var coordinates = new Coordinates(position.latitude, position.longitude);
-          convertToAddress(coordinates).then((value) => _address = value);
+      setState(() {
+        _position = position;
+        print('position is $_position');
+      });
+      lat = position.latitude;
+      long = position.longitude;
+      // var coordinates = new Coordinates(position.latitude, position.longitude);
+      // convertToAddress(coordinates).then((value) => _address = value);
 //      print('address is $_address');
-        });
+    });
   }
 
   Future<Address> convertToAddress(Coordinates coordinates) async {
     var address =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     return address.first;
   }
 
